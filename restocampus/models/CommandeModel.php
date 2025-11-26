@@ -190,6 +190,40 @@ class CommandeModel {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // chose a supprimé
+public function getTotauxParArticle()
+{
+    return $this->pdo->query("
+        SELECT a.nom, COUNT(c.idCommande) AS total
+        FROM commande c
+        JOIN articledisponible d ON c.idDispo = d.idDispo
+        JOIN article a ON d.idArticle = a.idArticle
+        GROUP BY a.idArticle
+    ")->fetchAll();
+}
+
+public function getStatistiquesGenerales()
+{
+    return [
+        "totalUsers"      => $this->pdo->query("SELECT COUNT(*) FROM utilisateur")->fetchColumn(),
+        "etudiants"       => $this->pdo->query("SELECT COUNT(*) FROM utilisateur WHERE role='etudiant'")->fetchColumn(),
+        "admins"          => $this->pdo->query("SELECT COUNT(*) FROM utilisateur WHERE role='admin'")->fetchColumn(),
+        "articles"        => $this->pdo->query("SELECT COUNT(*) FROM article")->fetchColumn(),
+        "reservations"    => $this->pdo->query("SELECT COUNT(*) FROM commande")->fetchColumn(),
+    ];
+}
+public function getReservationsParJour()
+{
+    return $this->pdo->query("
+        SELECT DATE(dateCommande) AS jour, COUNT(*) AS total
+        FROM commande
+        GROUP BY DATE(dateCommande)
+        ORDER BY jour ASC
+    ")->fetchAll();
+}
+
+
    
 }
 

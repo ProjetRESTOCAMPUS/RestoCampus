@@ -16,6 +16,24 @@
     </div>
   </div>
 
+<form method="GET" action="index.php" class="mb-3 d-flex">
+    <input type="hidden" name="action" value="listerUsers">
+
+    <input type="text" name="search" class="form-control me-2"
+           placeholder="Rechercher un utilisateur..."
+           value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+
+    <button class="btn btn-primary">
+        <i class="bi bi-search"></i>
+    </button>
+</form>
+
+
+<a href="index.php?action=importCSV" class="btn btn-success mb-3">
+  <i class="bi bi-file-earmark-arrow-up"></i> Importer des étudiants (CSV)
+</a>
+
+
   <?php if (empty($users)): ?>
     <div class="alert alert-light border text-center py-4">
       <p class="mb-2">Aucun utilisateur trouvé.</p>

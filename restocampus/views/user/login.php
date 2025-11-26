@@ -62,6 +62,11 @@
                 <button type="submit" class="btn btn-primary">Se connecter</button>
             </div>
         </form>
+        
+        <p class="text-center mt-3">
+            <a href="index.php?action=register" class="text-decoration-none">🧾 Créer un compte</a><br>
+            <a href="#" class="text-decoration-none text-muted">🔑 Mot de passe oublié ?</a>
+        </p>
 
         <p class="text-center text-muted mt-3 mb-0" style="font-size: 0.9em;">
             © <?= date('Y') ?> RestoCampus

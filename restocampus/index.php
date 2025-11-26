@@ -47,7 +47,15 @@ switch ($action) {
     case 'verifier':
         $userController->verifier();
         break;
+    
+    case 'register':
+        $userController->register();
+        break;
 
+    case 'registerUser':
+        $userController->registerUser();
+        break;
+    
     case 'logout':
         $userController->logout();
         break;
@@ -157,4 +165,9 @@ switch ($action) {
     default:
         echo "<h1>Page introuvable.</h1>";
         break;
+    
+    case "stats":
+    $commandeController->statsAdmin();
+    break;
+
 }

@@ -57,16 +57,22 @@ class UserController {
         exit;
     }
 
-
+// au cas ou faire controle z 
     public function listerUsers() {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-            header("Location: index.php?action=login");
-            exit;
-        }
-
-        $users = $this->model->getAll();
-        require "views/user/list.php";
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header("Location: index.php?action=login");
+        exit;
     }
+
+    // récupération de la recherche
+    $search = isset($_GET['search']) ? trim($_GET['search']) : null;
+
+    // on passe le paramètre au model
+    $users = $this->model->getAll($search);
+
+    require "views/user/list.php";
+}
+
 
     public function ajouterUser() {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -172,4 +178,68 @@ class UserController {
         header("Location: index.php?action=listerUsers");
         exit;
     }
+
+    // ce que j'ai rajouter concernant de crée un compte + mot de passe oublié 
+
+    public function register() {
+        require "views/user/register.php";
+        }
+
+    public function registerUser() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $login = trim($_POST['login']);
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+        if (empty($login) || empty($_POST['password'])) {
+            $error = "Tous les champs sont obligatoires.";
+            require "views/user/register.php";
+            return;
+        }
+
+        $existingUser = $this->model->getByLogin($login);
+        if ($existingUser) {
+            $error = "Ce login existe déjà.";
+            require "views/user/register.php";
+            return;
+        }
+
+        $this->model->createUser($login, $password, "etudiant");
+
+        header("Location: index.php?action=login&success=1");
+        exit();
+        }
+    }
+
+    public function importCSV() {
+    if ($_SESSION['role'] !== 'admin') {
+        header("Location: index.php");
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv'])) {
+
+        $file = fopen($_FILES['csv']['tmp_name'], "r");
+        $added = 0;
+
+        while (($line = fgetcsv($file, 1000, ";")) !== FALSE) {
+
+            list($login, $nom, $prenom, $password) = $line;
+
+            if (!$this->model->userExists($login)) {
+                $this->model->createUser($login, $password, $nom, $prenom, "etudiant");
+                $added++;
+            }
+        }
+
+        fclose($file);
+
+        $_SESSION['message'] = "$added étudiants importés.";
+        header("Location: index.php?action=listerUsers");
+        exit;
+    }
+
+    require "views/user/importCSV.php";
+}
+
+
 }

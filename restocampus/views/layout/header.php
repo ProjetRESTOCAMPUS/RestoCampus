@@ -30,11 +30,16 @@
           <li class="nav-item"><a class="nav-link" href="index.php?action=listerUsers"><i class="bi bi-people"></i> Utilisateurs</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php?action=listerArticles"><i class="bi bi-journal-text"></i> Articles</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php?action=listerDispo"><i class="bi bi-calendar-event"></i> Disponibilités</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?action=stats"><i class="bi bi-bar-chart"></i> Statistiques</a></li>
 
         <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'etudiant'): ?>
           <li class="nav-item"><a class="nav-link" href="index.php?action=reserver"><i class="bi bi-bag-check"></i> Voir les articles disponibles</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php?action=mesCommandes"><i class="bi bi-receipt"></i> Mes commandes</a></li>
 
+        <?php elseif(isset($_SESSION['role']) && $_SESSION['role'] === 'gestionnaire'): ?>
+          <li class="nav-item"><a class="nav-link" href="index.php?action=listerArticles"><i class="bi bi-journal-text"></i> Articles</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?action=listerDispo"><i class="bi bi-calendar-event"></i> Disponibilités</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?action=stats"><i class="bi bi-bar-chart"></i> Statistiques</a></li>
         <?php endif; ?>
       </ul>
 

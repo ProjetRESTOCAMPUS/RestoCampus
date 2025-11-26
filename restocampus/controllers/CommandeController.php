@@ -120,5 +120,17 @@ class CommandeController {
         header("Location: index.php?action=dashboardAdmin");
         exit;
     }
+
+    // chose a supprimé
+    public function statsAdmin()
+{
+    $totaux = $this->model->getTotauxParArticle();
+    $stats = $this->model->getStatistiquesGenerales();
+    $courbe = $this->model->getReservationsParJour();
+
+    require "views/admin/stats.php";
+}
+
+
 }
 
